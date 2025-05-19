@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DreamWeaver</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>DreamWeaver</h1>
+    <textarea id="journal" placeholder="Describe your dream..."></textarea><br>
+    <button onclick="submitData()">Analyze Dream</button>
+    <div id="result"></div>
+    <script>
+        function submitData() {
+            const journal = document.getElementById("journal").value;
+            const sleepData = Array.from({ length: 90 }, () => Math.random()); // Fake sleep data
+            fetch("/analyze", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ journal, sleep_data: sleepData })
+            }).then(res => res.json()).then(data => {
+                document.getElementById("result").innerHTML =
+                    `<p>Emotion: ${data.emotion}</p>
+                     <p>Sleep Score: ${data.sleep_summary.score}</p>
+                     <img src="${data.dream_url}" width="400"/>`;
+            });
+        }
+    </script>
+</body>
+</html>
